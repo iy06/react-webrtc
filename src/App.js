@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@material-ui/core';
 
 const getMedia = async () => {
   // 使用するメディアの種類を定義
@@ -14,8 +15,8 @@ const getMedia = async () => {
 
 getMedia();
 
-constApp = () => {
-  return <div>Hello, React!</div>;
+const App = () => {
+  return <Button color="inherit" variant="contained">Hello World</Button>;
 };
 
 export default App;
