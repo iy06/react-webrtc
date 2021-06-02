@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
+import InputFormLocal from './InputFormLocal';
+import InputFormRemote from './InputFormRemote';
 
 const getMedia = async () => {
   // 使用するメディアの種類を定義
@@ -16,7 +17,12 @@ const getMedia = async () => {
 getMedia();
 
 const App = () => {
-  return <Button color="inherit" variant="contained">Hello World</Button>;
+  return(
+    <>
+      <InputFormLocal />;
+      <InputFormRemote />;
+    </>
+  );
 };
 
 export default App;
