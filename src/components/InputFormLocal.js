@@ -17,8 +17,6 @@ function Copyright() {
       <Link color="inherit" href="https://github.com/iy06">
         iy06
       </Link>{' '}
-      {/* {new Date().getFullYear()}
-      {'.'} */}
     </Typography>
   );
 }
