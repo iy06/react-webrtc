@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignIn({ remotePeerName, setRemotePeerName }) {
   const classes = useStyles();
 
   return (
@@ -62,6 +62,7 @@ export default function SignIn() {
             fullWidth
             label="Partner Name"
             name="partner_name"
+            color="secondary"
             autoFocus
           />
           <Button

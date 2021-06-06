@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -41,8 +41,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignIn({ localPeerName, setLocalPeerName }) {
   const classes = useStyles();
+  const [disabled, setDisabled] = useState(true);
+  const [name, setName] = useState('');
+  // 変換中か状態管理する
+  const [isComposed, setIsComposed] = useState(false);
+
+  // nameが空文字でなければfalse
+  useEffect(() => {
+    const disabled = name === '';
+    setDisabled(disabled);
+  }, [name]);
+
+  // 自分の名前を確定する関数, useCallbackを使ってキャッシュする
+  const initializeLocalPeer = useCallback((event) => {
+    setLocalPeerName(name);
+    event.preventDefault();
+    // 依存するものを配列で渡す
+  }, [name, setLocalPeerName]);
+
+  // 自分の名前が保持されていれば表示しない
+  if (localPeerName !== '') return <></>;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -61,7 +81,22 @@ export default function SignIn() {
             required
             fullWidth
             label="Your Name"
-            name="name"
+            name={name}
+            onChange={(event) => setName(event.target.value)}
+            // 変換中か確認するComposition
+            onCompositionStart={() => setIsComposed(true)}
+            onCompositionEnd={() => setIsComposed(false)}
+            // TextFieldでEnterが押された場合のeventハンドラ
+            onKeyDown={(event) => {
+              // 変換中であれば確定しない
+              if (isComposed) return;
+              // 値がから出れば確定しない
+              if (event.target.value === '') return;
+              // 上記に当てはまらず、Enterが入力されたら確定
+              if (event.key == 'Enter') {
+                initializeLocalPeer(event);
+              }
+            }}
             autoFocus
           />
           <Button
@@ -70,6 +105,10 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={disabled}
+            onClick={(event) => {
+              initializeLocalPeer(event);
+            }}
           >
             submit
           </Button>

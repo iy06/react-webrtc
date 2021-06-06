@@ -23,8 +23,8 @@ const App = () => {
   return(
     <>
       <InputFormLocal
-        localPeerNameP={localPeerName}
-        setLoacalPeerName={setLocalPeerName}
+        localPeerName={localPeerName}
+        setLocalPeerName={setLocalPeerName}
       />;
 
       <InputFormRemote
