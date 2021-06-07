@@ -81,7 +81,9 @@ export default function SignIn({ localPeerName, setLocalPeerName }) {
             required
             fullWidth
             label="Your Name"
-            name={name}
+            autoFocus
+            name='name'
+            value={name}
             onChange={(event) => setName(event.target.value)}
             // 変換中か確認するComposition
             onCompositionStart={() => setIsComposed(true)}
@@ -97,7 +99,6 @@ export default function SignIn({ localPeerName, setLocalPeerName }) {
                 initializeLocalPeer(event);
               }
             }}
-            autoFocus
           />
           <Button
             type="submit"

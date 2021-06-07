@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -41,8 +41,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn({ remotePeerName, setRemotePeerName }) {
+export default function SignIn({ localPeerName, remotePeerName, setRemotePeerName }) {
   const classes = useStyles();
+  const [disabled, setDisabled] = useState(true);
+  const [name, setName] = useState('');
+  // 変換中か状態管理する
+  const [isComposed, setIsComposed] = useState(false);
+
+  // nameが空文字でなければfalse
+  useEffect(() => {
+    const disabled = name === '';
+    setDisabled(disabled);
+  }, [name]);
+
+  const initializeRemotePeer = useCallback((event) => {
+    setRemotePeerName(name);
+    event.preventDefault();
+    // 依存するものを配列で渡す
+  }, [name, setRemotePeerName]);
+
+  // 自分の名前が保持されていなければコンポーネントを消す
+  if (localPeerName === '') return <></>;
+  // 相手の名前が保持されていればコンポーネントを消す
+  if (remotePeerName !== '') return <></>;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -64,6 +85,22 @@ export default function SignIn({ remotePeerName, setRemotePeerName }) {
             name="partner_name"
             color="secondary"
             autoFocus
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            // 変換中か確認するComposition
+            onCompositionStart={() => setIsComposed(true)}
+            onCompositionEnd={() => setIsComposed(false)}
+            // TextFieldでEnterが押された場合のeventハンドラ
+            onKeyDown={(event) => {
+              // 変換中であれば確定しない
+              if (isComposed) return;
+              // 値がから出れば確定しない
+              if (event.target.value === '') return;
+              // 上記に当てはまらず、Enterが入力されたら確定
+              if (event.key == 'Enter') {
+                initializeRemotePeer(event);
+              }
+            }}
           />
           <Button
             type="submit"
@@ -71,6 +108,8 @@ export default function SignIn({ remotePeerName, setRemotePeerName }) {
             variant="contained"
             color="secondary"
             className={classes.submit}
+            disabled={disabled}
+            onClick={(event) => initializeRemotePeer(event)}
           >
             submit
           </Button>
