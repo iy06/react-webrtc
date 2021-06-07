@@ -97,7 +97,7 @@ export default function SignIn({ localPeerName, remotePeerName, setRemotePeerNam
               // 値がから出れば確定しない
               if (event.target.value === '') return;
               // 上記に当てはまらず、Enterが入力されたら確定
-              if (event.key == 'Enter') {
+              if (event.key === 'Enter') {
                 initializeRemotePeer(event);
               }
             }}

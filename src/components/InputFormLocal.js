@@ -95,7 +95,7 @@ export default function SignIn({ localPeerName, setLocalPeerName }) {
               // 値がから出れば確定しない
               if (event.target.value === '') return;
               // 上記に当てはまらず、Enterが入力されたら確定
-              if (event.key == 'Enter') {
+              if (event.key === 'Enter') {
                 initializeLocalPeer(event);
               }
             }}
