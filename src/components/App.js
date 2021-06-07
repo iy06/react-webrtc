@@ -1,4 +1,3 @@
-import { ContactSupportOutlined } from '@material-ui/icons';
 import React, { useState } from 'react';
 import InputFormLocal from './InputFormLocal';
 import InputFormRemote from './InputFormRemote';
@@ -7,7 +6,6 @@ import VideoArea from './VideoArea';
 const App = () => {
   const [localPeerName, setLocalPeerName] = useState('');
   const [remotePeerName, setRemotePeerName] = useState('');
-
   console.log({localPeerName, remotePeerName})
 
   return(
