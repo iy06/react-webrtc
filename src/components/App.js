@@ -10,17 +10,18 @@ const App = () => {
 
   return(
     <>
+      {/* 自分の名前を入力するコンポーネント */}
       <InputFormLocal
         localPeerName={localPeerName}
         setLocalPeerName={setLocalPeerName}
       />
-
+      {/* 相手の名前を入力するコンポーネント */}
       <InputFormRemote
         localPeerName={localPeerName}
         remotePeerName={remotePeerName}
         setRemotePeerName={setRemotePeerName}
       />
-
+      {/* ビデオを表示するコンポーネント */}
       <VideoArea
         localPeerName={localPeerName}
         remotePeerName={remotePeerName}
