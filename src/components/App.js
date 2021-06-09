@@ -1,31 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import InputFormLocal from './InputFormLocal';
 import InputFormRemote from './InputFormRemote';
+import RtcClient from '../utils/RtcClient';
 import VideoArea from './VideoArea';
 
 const App = () => {
-  const [localPeerName, setLocalPeerName] = useState('');
-  const [remotePeerName, setRemotePeerName] = useState('');
-  console.log({localPeerName, remotePeerName})
+  const rtcClient = new RtcClient();
+  console.log(rtcClient);
 
   return(
     <>
       {/* 自分の名前を入力するコンポーネント */}
-      <InputFormLocal
-        localPeerName={localPeerName}
-        setLocalPeerName={setLocalPeerName}
-      />
+      <InputFormLocal rtcClient={rtcClient} />
       {/* 相手の名前を入力するコンポーネント */}
-      <InputFormRemote
-        localPeerName={localPeerName}
-        remotePeerName={remotePeerName}
-        setRemotePeerName={setRemotePeerName}
-      />
+      <InputFormRemote rtcClient={rtcClient} />
       {/* ビデオを表示するコンポーネント */}
-      <VideoArea
-        localPeerName={localPeerName}
-        remotePeerName={remotePeerName}
-      />
+      <VideoArea rtcClient={rtcClient} />
     </>
   );
 };

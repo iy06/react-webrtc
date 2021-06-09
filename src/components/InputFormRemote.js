@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn({ localPeerName, remotePeerName, setRemotePeerName }) {
+export default function SignIn({ rtcClient }) {
   const classes = useStyles();
   const [disabled, setDisabled] = useState(true);
   const [name, setName] = useState('');
@@ -55,15 +55,15 @@ export default function SignIn({ localPeerName, remotePeerName, setRemotePeerNam
   }, [name]);
 
   const initializeRemotePeer = useCallback((event) => {
-    setRemotePeerName(name);
+    rtcClient.remotePeerName = name;
     event.preventDefault();
     // 依存するものを配列で渡す
-  }, [name, setRemotePeerName]);
+  }, [name, rtcClient]);
 
   // 自分の名前が保持されていなければコンポーネントを消す
-  if (localPeerName === '') return <></>;
+  if (rtcClient.localPeerName === '') return <></>;
   // 相手の名前が保持されていればコンポーネントを消す
-  if (remotePeerName !== '') return <></>;
+  if (rtcClient.remotePeerName !== '') return <></>;
 
   return (
     <Container component="main" maxWidth="xs">
