@@ -1,3 +1,4 @@
+// RtcClientクラス
 export default class RtcClient {
   constructor() {
     // stunサーバーのurlを設定
