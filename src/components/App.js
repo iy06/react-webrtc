@@ -5,6 +5,7 @@ import VideoArea from './VideoArea';
 import useRtcClient from './hooks/useRtcClient';
 
 const App = () => {
+  // rtcClientをカスタムHookとして定義
   const rtcClient = useRtcClient();
 
   return(
