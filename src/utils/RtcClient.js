@@ -1,4 +1,5 @@
 // RtcClientクラス
+import FirebaseSignalingClient from './FirebaseSignalingClient';
 export default class RtcClient {
   constructor(setRtcClient) {
     // stunサーバーのurlを設定
@@ -10,6 +11,8 @@ export default class RtcClient {
     };
 
     this.rtcPeerConnection = new RTCPeerConnection(config);
+
+    this.FirebaseSignalingClient = new FirebaseSignalingClient();
 
     this.localPeerName = '';
 
@@ -31,5 +34,13 @@ export default class RtcClient {
     } catch(error) {
       console.log(error);
     };
+  };
+
+  startListening(localPeerName) {
+    this.localPeerName = localPeerName;
+    this.setRtcClient();
+    this.FirebaseSignalingClient.database.ref(localPeerName).on('value', (snapshot) => {
+      const data = snapshot.val();
+    });
   };
 }

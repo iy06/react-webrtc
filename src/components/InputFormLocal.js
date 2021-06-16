@@ -56,8 +56,7 @@ export default function SignIn({ rtcClient }) {
 
   // 自分の名前を確定する関数, useCallbackを使ってキャッシュする
   const initializeLocalPeer = useCallback((event) => {
-    rtcClient.localPeerName = name;
-    rtcClient.setRtcClient();
+    rtcClient.startListening(name);
     event.preventDefault();
     // 依存するものを配列で渡す
   }, [name, rtcClient]);
