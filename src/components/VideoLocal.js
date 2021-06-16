@@ -1,22 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 import Video from './Video';
 
-const VideoLocal = ({ name }) => {
+const VideoLocal = ({ rtcClient }) => {
   // useRefを初期化
   const videoRef = useRef(null);
   const currentVideoRef = videoRef.current;
+  const mediaStream = rtcClient.mediaStream;
 
   useEffect(() => {
     if (currentVideoRef === null) return;
 
-    const getMedia = async () => {
-      // 使用するメディアの種類を定義
-      const constraints = { audio: true, video: true };
-      console.log("getMedia!")
+    const getMedia = () => {
 
       try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
-        console.log(mediaStream);
         currentVideoRef.srcObject = mediaStream;
       } catch(error) {
         console.log(error)
@@ -24,9 +20,9 @@ const VideoLocal = ({ name }) => {
     };
 
     getMedia();
-  }, [currentVideoRef]);
+  }, [currentVideoRef, mediaStream]);
 
-  return <Video isLocal={true} videoRef={videoRef} name={name}/>;
+  return <Video isLocal={true} videoRef={videoRef} name={rtcClient.localPeerName}/>;
 };
 
 export default VideoLocal;
