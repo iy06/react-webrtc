@@ -36,6 +36,31 @@ export default class RtcClient {
     };
   };
 
+  async setMediaStram() {
+    await this.getUserMedia();
+  };
+
+  addTracks() {
+    this.addAudioTrack();
+    this.addVideoTrack();
+  };
+
+  addAudioTrack() {
+    this.rtcPeerConnection.addTrack(this.audioTrack, this.mediaStream);
+  };
+
+  addVideoTrack() {
+    this.rtcPeerConnection.addTrack(this.videoTrack, this.mediaStream);
+  };
+
+  get audioTrack() {
+    return this.mediaStream.getAudioTracks()[0];
+  }
+
+  get videoTrack() {
+    return this.mediaStream.getVideoTracks()[0];
+  }
+
   startListening(localPeerName) {
     this.localPeerName = localPeerName;
     this.setRtcClient();
