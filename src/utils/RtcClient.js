@@ -11,15 +11,10 @@ export default class RtcClient {
     };
 
     this.rtcPeerConnection = new RTCPeerConnection(config);
-
     this.FirebaseSignalingClient = new FirebaseSignalingClient();
-
     this.localPeerName = '';
-
     this.remotePeerName = '';
-
     this._setRtcClient = setRtcClient;
-
     this.mediaStream = null;
   };
 
