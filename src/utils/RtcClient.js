@@ -1,4 +1,5 @@
 // RtcClientクラス
+import { FilterTiltShift } from '@material-ui/icons';
 import FirebaseSignalingClient from './FirebaseSignalingClient';
 export default class RtcClient {
   constructor(remoteVideoRef, setRtcClient) {
@@ -55,6 +56,32 @@ export default class RtcClient {
 
   get videoTrack() {
     return this.mediaStream.getVideoTracks()[0];
+  }
+
+  setOnTrack() {
+    this.rtcPeerConnection.onTrack = (rtcTrackEvent) => {
+      if (rtcTrackEvent.track.kind !== 'video') return;
+
+      const remoteMediaStream = rtcTrackEvent.stream[0];
+      this.remoteVideoRef.current.srcObject = remoteMediaStream;
+      this.setRtcClient();
+    };
+  }
+
+  connect(remotePeerName) {
+    this.remotePeerName = remotePeerName;
+    this.setOnicecandidateCallback();
+    this.setOnTrack();
+    this.setRtcClient();
+  }
+
+  setOnicecandidataCallback = () => {
+    this.rtcPeerConnection.setOnicecandidate = ({ candidate }) = {
+      if (candidate) {
+        console.log({ candidate });
+        // TOTO: remoteへcandidateを通知する。
+      }
+    };
   }
 
   startListening(localPeerName) {
