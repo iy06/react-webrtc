@@ -1,10 +1,10 @@
 import React from 'react';
 import Video from './Video';
 
-const VideoRemote = ({ name }) => {
+const VideoRemote = ({ rtcClient }) => {
   // useRefを初期化
-  const videoRef = null;
-  return <Video isLocal={false} vidoRef={videoRef} name={name}/>;
+  const videoRef = rtcClient.remoteVideoRef;
+  return <Video isLocal={false} vidoRef={videoRef} name={rtcClient.remotePeerName}/>;
 };
 
 export default VideoRemote;
