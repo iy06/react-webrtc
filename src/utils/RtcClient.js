@@ -61,7 +61,6 @@ export default class RtcClient {
   setOnTrack() {
     this.rtcPeerConnection.onTrack = (rtcTrackEvent) => {
       if (rtcTrackEvent.track.kind !== 'video') return;
-
       const remoteMediaStream = rtcTrackEvent.stream[0];
       this.remoteVideoRef.current.srcObject = remoteMediaStream;
       this.setRtcClient();
