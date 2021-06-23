@@ -78,7 +78,6 @@ export default class RtcClient {
     this.rtcPeerConnection.setOnicecandidate = ({ candidate }) = {
       if (candidate) {
         console.log({ candidate });
-        // TOTO: remoteへcandidateを通知する。
       }
     };
   }
