@@ -54,9 +54,9 @@ export default function SignIn({ rtcClient }) {
     setDisabled(disabled);
   }, [name]);
 
-  const initializeRemotePeer = useCallback((event) => {
+  const initializeRemotePeer = useCallback(async (event) => {
     // 相手の名前が確定すれば接続を開始する
-    rtcClient.connect(name);
+    await rtcClient.connect(name);
     event.preventDefault();
     // 依存するものを配列で渡す
   }, [name, rtcClient]);
@@ -92,14 +92,14 @@ export default function SignIn({ rtcClient }) {
             onCompositionStart={() => setIsComposed(true)}
             onCompositionEnd={() => setIsComposed(false)}
             // TextFieldでEnterが押された場合のeventハンドラ
-            onKeyDown={(event) => {
+            onKeyDown={async (event) => {
               // 変換中であれば確定しない
               if (isComposed) return;
               // 値がから出れば確定しない
               if (event.target.value === '') return;
               // 上記に当てはまらず、Enterが入力されたら確定
               if (event.key === 'Enter') {
-                initializeRemotePeer(event);
+                await initializeRemotePeer(event);
               }
             }}
           />
@@ -110,7 +110,7 @@ export default function SignIn({ rtcClient }) {
             color="secondary"
             className={classes.submit}
             disabled={disabled}
-            onClick={(event) => initializeRemotePeer(event)}
+            onClick={async (event) => await initializeRemotePeer(event)}
           >
             submit
           </Button>

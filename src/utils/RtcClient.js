@@ -1,5 +1,5 @@
 // RtcClientクラス
-import { FilterTiltShift } from '@material-ui/icons';
+import { FilterTiltShift, LocalConvenienceStoreOutlined } from '@material-ui/icons';
 import FirebaseSignalingClient from './FirebaseSignalingClient';
 export default class RtcClient {
   constructor(remoteVideoRef, setRtcClient) {
@@ -52,11 +52,45 @@ export default class RtcClient {
 
   get audioTrack() {
     return this.mediaStream.getAudioTracks()[0];
-  }
+  };
 
   get videoTrack() {
     return this.mediaStream.getVideoTracks()[0];
-  }
+  };
+
+  async offer() {
+    const sessionDescription = await this.createOffer();
+    await this.setLocalDescription(sessionDescription);
+    await this.sendOffer();
+  };
+
+  async createOffer() {
+    try {
+      return await this.rtcPeerConnection.createOffer();
+    } catch(error) {
+      console.log(error);
+    };
+  };
+
+  async setLocalDescription(sessionDescription) {
+    try {
+      await this.rtcPeerConnection.setLocalDescription(sessionDescription);
+    } catch(error) {
+      console.log(error);
+    };
+  };
+
+  async sendOffer() {
+    this.FirebaseSignalingClient.setPeerNames(
+      this.localPeerName,
+      this.remotePeerName
+    );
+    await this.FirebaseSignalingClient.sendOffer(this.localDescription);
+  };
+
+  get localDescription() {
+    return this.rtcPeerConnection.localDescription.toJSON();
+  };
 
   setOnTrack() {
     this.rtcPeerConnection.onTrack = (rtcTrackEvent) => {
@@ -65,22 +99,23 @@ export default class RtcClient {
       this.remoteVideoRef.current.srcObject = remoteMediaStream;
       this.setRtcClient();
     };
-  }
+  };
 
-  connect(remotePeerName) {
+  async connect(remotePeerName) {
     this.remotePeerName = remotePeerName;
     this.setOnicecandidateCallback();
     this.setOnTrack();
+    await this.offer();
     this.setRtcClient();
-  }
+  };
 
   setOnicecandidataCallback = () => {
-    this.rtcPeerConnection.setOnicecandidate = ({ candidate }) = {
+    this.rtcPeerConnection.setOnicecandidate = ({ candidate }) => {
       if (candidate) {
-        console.log({ candidate });
+        console.log(candidate);
       }
     };
-  }
+  };
 
   startListening(localPeerName) {
     this.localPeerName = localPeerName;
