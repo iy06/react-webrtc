@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Video = ({ isLocal, name, videoRef }) => {
-  console.log(videoRef);
+  // console.log(videoRef);
   return (
     <div>
       <video autoPlay ref={videoRef} muted={isLocal} />

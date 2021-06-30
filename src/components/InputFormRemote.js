@@ -47,6 +47,7 @@ export default function SignIn({ rtcClient }) {
   const [name, setName] = useState('');
   // 変換中か状態管理する
   const [isComposed, setIsComposed] = useState(false);
+  console.log(rtcClient);
 
   // nameが空文字でなければfalse
   useEffect(() => {

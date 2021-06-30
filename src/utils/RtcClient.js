@@ -1,5 +1,4 @@
 // RtcClientクラス
-import { FilterTiltShift, LocalConvenienceStoreOutlined } from '@material-ui/icons';
 import FirebaseSignalingClient from './FirebaseSignalingClient';
 export default class RtcClient {
   constructor(remoteVideoRef, setRtcClient) {
@@ -60,15 +59,17 @@ export default class RtcClient {
 
   async offer() {
     const sessionDescription = await this.createOffer();
+    console.log(sessionDescription);
     await this.setLocalDescription(sessionDescription);
     await this.sendOffer();
   };
 
   async createOffer() {
+    console.log("ok");
     try {
       return await this.rtcPeerConnection.createOffer();
     } catch(error) {
-      console.log(error);
+      console.error(error);
     };
   };
 
@@ -76,7 +77,7 @@ export default class RtcClient {
     try {
       await this.rtcPeerConnection.setLocalDescription(sessionDescription);
     } catch(error) {
-      console.log(error);
+      console.error(error);
     };
   };
 
@@ -85,6 +86,7 @@ export default class RtcClient {
       this.localPeerName,
       this.remotePeerName
     );
+    console.log(this.rtcPeerConnection.localDescription);
     await this.FirebaseSignalingClient.sendOffer(this.localDescription);
   };
 
@@ -109,8 +111,9 @@ export default class RtcClient {
     this.setRtcClient();
   };
 
-  setOnicecandidataCallback = () => {
+  setOnicecandidateCallback = () => {
     this.rtcPeerConnection.setOnicecandidate = ({ candidate }) => {
+      console.log(candidate);
       if (candidate) {
         console.log(candidate);
       }
@@ -121,7 +124,7 @@ export default class RtcClient {
     this.localPeerName = localPeerName;
     this.setRtcClient();
     this.FirebaseSignalingClient.database.ref(localPeerName).on('value', (snapshot) => {
-      const data = snapshot.val();
+      // const data = snapshot.val();
     });
   };
-}
+};
